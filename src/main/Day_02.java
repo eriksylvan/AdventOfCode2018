@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class Day_02 {
 
-    String inputFile = "input\\input_02.txt";
+    String inputFile = "input/input_02.txt";
 
     public ArrayList<String> getInputData() {
 
