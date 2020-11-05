@@ -16,13 +16,6 @@ public class Day_01 {
     public ArrayList<Integer> getInputData() {
         Scanner inputScanner;
         System.out.println("1__getInputData");
-        System.out.println(Day_01.class.getName());
-        System.out.println(Day_01.class.getResource(inputFile));
-        System.out.println(this.getClass().getResource(inputFile));
-        System.out.println(ClassLoader.getSystemResource(inputFile));
-        System.out.println("1.1__getInputData");
-        System.out.println(Day_01.class.getResourceAsStream(inputFile).toString());
-        System.out.println("1.2__getInputData");
         inputScanner = new Scanner(Day_01.class.getResourceAsStream(inputFile));
         System.out.println("2__getInputData");
         ArrayList<Integer> inp = new ArrayList<>();
