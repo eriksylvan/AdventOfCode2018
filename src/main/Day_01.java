@@ -15,11 +15,15 @@ public class Day_01 {
 
     public ArrayList<Integer> getInputData() {
         Scanner inputScanner;
+        System.out.println("1__getInputData");
         inputScanner = new Scanner(Day_01.class.getResourceAsStream(inputFile));
+        System.out.println("2__getInputData");
         ArrayList<Integer> inp = new ArrayList<>();
+        System.out.println("3__getInputData");
         while (inputScanner.hasNextInt()) {
             inp.add(inputScanner.nextInt());
         }
+        System.out.println("4__getInputData");
         inputScanner.close();
         return inp;
     }
