@@ -1,12 +1,8 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import junit.framework.TestCase;
 import main.Day_XX;
+import org.junit.Test;
 
 public class Day_XX_test extends TestCase {
 
