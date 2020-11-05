@@ -11,12 +11,11 @@ import java.util.Set;
  */
 public class Day_01 {
 
-    String inputFile = "input_01.txt";
+    String inputFile = "/input/input_01.txt";
 
     public ArrayList<Integer> getInputData() {
         Scanner inputScanner;
         System.out.println("1__getInputData");
-
         System.out.println(Day_01.class.getName());
         System.out.println(Day_01.class.getResource(inputFile));
         System.out.println(this.getClass().getResource(inputFile));
