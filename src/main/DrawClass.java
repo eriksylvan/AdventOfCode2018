@@ -13,7 +13,7 @@ public class DrawClass extends JPanel {
 
   public void paint(Graphics g) {
     Image img = createImage();
-    g.drawImage(img, 20,20,this);
+    g.drawImage(img,20,20,this);
   }
 
   public static void main(String[] args) {
