@@ -72,9 +72,8 @@ public class Day_03 {
             overlap:for (int i = c[2]; i < (c[2] + c[4]); i++) {
                 for (int j = c[1]; j < (c[1] + c[3]); j++) {                    
                     if (map[i][j] > 1) {
-                        int A = map[i][j];
                         found = false;
-                        break overlap; // A value > 1 indicates overlap 
+                        break overlap; // a value > 1 indicates overlap 
                     }                       
                 }
             }
