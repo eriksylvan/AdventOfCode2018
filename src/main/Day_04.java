@@ -27,44 +27,80 @@ public class Day_04 {
             inp.add(inputScanner.nextLine());
         }
         inputScanner.close();
-
-        processinputData(inp);
-        //log.entrySet().stream().sorted(Map.Entry.<Date,String>comparingByKey()).forEach(action);;
         return inp;
     }
 
-    public void processinputData(ArrayList<String> inp) {
-        //DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public int processinputData(ArrayList<String> inp) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Map<Date, String> log = new HashMap<Date, String>();
-
+        Map<Integer, int[]> guards = new HashMap<Integer, int[]>();
         inp.sort(Comparator.naturalOrder());
-        
+        int gn = 0;
+        int mm = 0;
         for (String str : inp) {
-            //Pattern p = Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})\\]");
-            Pattern p = Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}):(\\d{2})\\] (falls asleep|wakes up|Guard #\\d{1,})");
+            // Pattern p = Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2})\\]");
+            // Pattern p = Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}):(\\d{2})\\]
+            // (falls asleep|wakes up|Guard #\\d{1,})");
+            Pattern p = Pattern.compile("\\[(\\d{4}-\\d{2}-\\d{2}) (\\d{2}):(\\d{2})\\] (.).+(?:#|p)(\\d{1,})?");
             Matcher m = p.matcher(str);
+
             if (m.find()) {
                 String dateStr = m.group(1);
-                String hr = m.group(2);
-                String min = m.group(3);
+//              String hr = m.group(2);
+                int min = Integer.parseInt(m.group(3));
                 String action = m.group(4);
+                int guardNo = (m.group(5) != null) ? Integer.parseInt(m.group(5)) : 0;
                 try {
                     Date date = format.parse(dateStr);
-                    System.out.println(date + " -- " + hr + " -- " + min + " -- " + action );
                     log.put(date, str);
+                    if (action.equals("G")) {
+                        mm = 0;
+                        gn = guardNo;
+                        guards.putIfAbsent(guardNo, new int[60]);
+                    }
+                    if (action.equals("f")) {
+                        mm = min;
+                    }
+                    if (action.equals("w")) {
+                        for (int i = mm; i < min; i++) {
+                            guards.get(gn)[i] = guards.get(gn)[i] + 1;
+                        }
+                    }
+
                 } catch (ParseException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
-
         }
+
+        int mostTiredGuard = 0;
+        int maxSleepMinTot = 0;
+        int maxSleepMin = 0;
+
+        for (Map.Entry<Integer, int[]> pair : guards.entrySet()) {
+            int sleepMin = 0;
+            int maxMin = 0;
+            int maxMinPos = 0;
+            for (int i = 0; i<60; i++) {
+                sleepMin = sleepMin + pair.getValue()[i];
+                if(pair.getValue()[i] > maxMin){
+                    maxMin = pair.getValue()[i];
+                    maxMinPos = i;
+                }
+            }
+            if (sleepMin > maxSleepMinTot) {
+                maxSleepMinTot = sleepMin;
+                mostTiredGuard = pair.getKey();
+                maxSleepMin = maxMinPos;
+            }
+        }
+return mostTiredGuard * maxSleepMin;
     }
 
-    public int day04PartOne() {
-        int sum = -1;
-        return sum;
+    public int day04PartOne(ArrayList<String> inputData) {
+        int ans = this.processinputData(inputData);
+        return ans;
     }
 
     public int day04PartTwo() {
@@ -77,26 +113,9 @@ public class Day_04 {
         Day_04 day = new Day_04();
         int answer1, answer2;
         ArrayList<String> inp = day.getInputData();
-        answer1 = day.day04PartOne();
+        answer1 = day.day04PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
         answer2 = day.day04PartTwo();
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
-
-    private class Asleep {
-
-        int Month;
-        int Day;
-        int ID;
-        char isAsleep;
-
-        public void Asleep(int month, int day, int id, char isAsleep) {
-            this.Month = month;
-            this.Day = day;
-            this.ID = id;
-            this.isAsleep = isAsleep;
-        }
-
-    }
-
 }
