@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +28,12 @@ public class Day_04 {
         }
         inputScanner.close();
 
+        processinputData(inp);
+        //log.entrySet().stream().sorted(Map.Entry.<Date,String>comparingByKey()).forEach(action);;
+        return inp;
+    }
+
+    public void processinputData(ArrayList<String> inp) {
         //DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Map<Date, String> log = new HashMap<Date, String>();
@@ -55,8 +60,6 @@ public class Day_04 {
             }
 
         }
-        //log.entrySet().stream().sorted(Map.Entry.<Date,String>comparingByKey()).forEach(action);;
-        return inp;
     }
 
     public int day04PartOne() {
