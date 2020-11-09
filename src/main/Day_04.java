@@ -30,7 +30,7 @@ public class Day_04 {
         return inp;
     }
 
-    public int processinputData(ArrayList<String> inp) {
+    protected Map<Integer, int[]> processinputData(ArrayList<String> inp) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Map<Date, String> log = new HashMap<Date, String>();
         Map<Integer, int[]> guards = new HashMap<Integer, int[]>();
@@ -46,7 +46,7 @@ public class Day_04 {
 
             if (m.find()) {
                 String dateStr = m.group(1);
-//              String hr = m.group(2);
+                // String hr = m.group(2);
                 int min = Integer.parseInt(m.group(3));
                 String action = m.group(4);
                 int guardNo = (m.group(5) != null) ? Integer.parseInt(m.group(5)) : 0;
@@ -74,6 +74,12 @@ public class Day_04 {
             }
         }
 
+        return guards;
+    }
+
+    public int day04PartOne(ArrayList<String> inputData) {
+        Map<Integer, int[]> guards = this.processinputData(inputData);
+
         int mostTiredGuard = 0;
         int maxSleepMinTot = 0;
         int maxSleepMin = 0;
@@ -82,9 +88,9 @@ public class Day_04 {
             int sleepMin = 0;
             int maxMin = 0;
             int maxMinPos = 0;
-            for (int i = 0; i<60; i++) {
+            for (int i = 0; i < 60; i++) {
                 sleepMin = sleepMin + pair.getValue()[i];
-                if(pair.getValue()[i] > maxMin){
+                if (pair.getValue()[i] > maxMin) {
                     maxMin = pair.getValue()[i];
                     maxMinPos = i;
                 }
@@ -95,17 +101,30 @@ public class Day_04 {
                 maxSleepMin = maxMinPos;
             }
         }
-return mostTiredGuard * maxSleepMin;
+        return mostTiredGuard * maxSleepMin;
     }
 
-    public int day04PartOne(ArrayList<String> inputData) {
-        int ans = this.processinputData(inputData);
-        return ans;
-    }
-
-    public int day04PartTwo() {
-        int sum = 0;
-        return sum;
+    public int day04PartTwo(ArrayList<String> inputData) {
+        Map<Integer, int[]> guards = this.processinputData(inputData);
+        int maxGuardMaxMin = 0;
+        int maxSleepMin = 0;
+        int mostTiredGuard = 0;
+        for (Map.Entry<Integer, int[]> pair : guards.entrySet()) {
+            int maxMin = 0;
+            int maxMinPos = 0;
+            for (int i = 0; i < 60; i++) {
+                if (pair.getValue()[i] > maxMin) {
+                    maxMin = pair.getValue()[i];
+                    maxMinPos = i;
+                }
+            }
+            if (maxMin > maxGuardMaxMin) {
+                mostTiredGuard = pair.getKey();
+                maxSleepMin = maxMinPos;
+                maxGuardMaxMin = maxMin;
+            }   
+        }
+        return mostTiredGuard * maxSleepMin;
     }
 
     public static void main(String[] args) {
@@ -115,7 +134,14 @@ return mostTiredGuard * maxSleepMin;
         ArrayList<String> inp = day.getInputData();
         answer1 = day.day04PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
-        answer2 = day.day04PartTwo();
+        answer2 = day.day04PartTwo(inp);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
+/********
+ * Advent of code 2018, Day 04
+ *
+ * Solution Part one: 36898
+ * Solution Part two: 80711
+ */
