@@ -18,3 +18,4 @@ public class Day_XX_test extends TestCase {
         assertEquals("expected: " + expected + " actual: " + actual, actual, expected);
     }
 }
+

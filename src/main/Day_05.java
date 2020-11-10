@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Day_05
- * https://adventofcode.com/2018/day/5
+ * Day_05 https://adventofcode.com/2018/day/5
  */
 public class Day_05 {
 
@@ -23,8 +22,36 @@ public class Day_05 {
     }
 
     public int day05PartOne(String inp) {
-        int sum = inp.length();
+        StringBuilder sb = new StringBuilder(inp);
+
+        boolean end = false;
+        int l = sb.length();
+        System.out.println(l);
+        // while(end){
+        // for (int i = 0; i < (l - 1); i++) {
+        int i = 0;
+        while (i < l - 1) {
+            char ch1 = sb.charAt(i);
+            char ch2 = sb.charAt(i + 1);
+            if (isOppositePolarity(ch1, ch2)) {
+                // sb.deleteCharAt(i);
+                // sb.deleteCharAt(i);
+                sb.delete(i, i + 2);
+                l = sb.length();
+                i = 0;
+            }else
+            {
+                i++;
+            }
+        }
+        // end = true;
+        // }
+        int sum = sb.length();
         return sum;
+    }
+
+    public boolean isOppositePolarity(char a, char b) {
+        return Math.abs((int) a - (int) b) == 32;
     }
 
     public int day05PartTwo() {
@@ -43,3 +70,14 @@ public class Day_05 {
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
+/*
+ * abstract System.out.println((int)inp.charAt(0));
+ * System.out.println(Math.abs((int)'A'-(int)'a'));
+ * System.out.println((int)'a'-(int)'A');
+ * 
+ * System.out.println(isOppositePolarity('a','A'));
+ * System.out.println(isOppositePolarity('A','A'));
+ * System.out.println(isOppositePolarity('A','a'));
+ * System.out.println(isOppositePolarity('a','b'));
+ */
