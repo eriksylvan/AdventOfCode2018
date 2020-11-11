@@ -24,39 +24,50 @@ public class Day_05 {
     public int day05PartOne(String inp) {
         StringBuilder sb = new StringBuilder(inp);
 
-        boolean end = false;
+        AlchemicalReduction(sb);
+
+        int len = sb.length();
+        return len;
+    }
+
+    private void AlchemicalReduction(StringBuilder sb) {
         int l = sb.length();
-        System.out.println(l);
-        // while(end){
-        // for (int i = 0; i < (l - 1); i++) {
         int i = 0;
         while (i < l - 1) {
             char ch1 = sb.charAt(i);
             char ch2 = sb.charAt(i + 1);
             if (isOppositePolarity(ch1, ch2)) {
-                // sb.deleteCharAt(i);
-                // sb.deleteCharAt(i);
                 sb.delete(i, i + 2);
                 l = sb.length();
                 i = 0;
-            }else
-            {
+            } else {
                 i++;
             }
         }
-        // end = true;
-        // }
-        int sum = sb.length();
-        return sum;
+    }
+
+    private StringBuilder RemoveUnit(StringBuilder sb, Character ch) {
+        String crLow = String.valueOf(Character.toLowerCase(ch));
+        String crUpp = String.valueOf(Character.toUpperCase(ch));
+        String regex = "[" + crLow + crUpp + "]";
+        return new StringBuilder(sb.toString().replaceAll(regex, ""));
     }
 
     public boolean isOppositePolarity(char a, char b) {
         return Math.abs((int) a - (int) b) == 32;
     }
 
-    public int day05PartTwo() {
-        int sum = 0;
-        return sum;
+    public int day05PartTwo(String inp) {
+       int minLength = inp.length();
+        for (char c = 'a'; c <= 'z'; c++) {
+            StringBuilder sb = new StringBuilder(inp);
+            sb = RemoveUnit(sb, c);
+            AlchemicalReduction(sb);
+            if (sb.length() < minLength) {
+                minLength = sb.length();
+            }
+        }
+        return minLength;
     }
 
     public static void main(String[] args) {
@@ -66,18 +77,14 @@ public class Day_05 {
         String inp = day_05.getInputData();
         answer1 = day_05.day05PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
-        answer2 = day_05.day05PartTwo();
+        answer2 = day_05.day05PartTwo(inp);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
 
-/*
- * abstract System.out.println((int)inp.charAt(0));
- * System.out.println(Math.abs((int)'A'-(int)'a'));
- * System.out.println((int)'a'-(int)'A');
+/**
+ * Advent of code 2018, Day 05
  * 
- * System.out.println(isOppositePolarity('a','A'));
- * System.out.println(isOppositePolarity('A','A'));
- * System.out.println(isOppositePolarity('A','a'));
- * System.out.println(isOppositePolarity('a','b'));
+ * Solution Part one: 10132
+ * Solution Part two: 4572
  */
