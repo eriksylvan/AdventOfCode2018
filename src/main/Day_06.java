@@ -43,6 +43,7 @@ public class Day_06 {
             bottom = (y > bottom) ? y : bottom;
 
         }
+
         Map<Point, int[]> space = new HashMap<Point, int[]>();
         for (int x = left; x <= right; x++) {
             for (int y = top; y <= bottom; y++) {
@@ -88,8 +89,40 @@ public class Day_06 {
         return maxArea;
     }
 
-    public int day06PartTwo() {
+    public int day06PartTwo(ArrayList<Point> inp, int limit) {
+
+        int left = Integer.MAX_VALUE;
+        int right = Integer.MIN_VALUE;
+        int top = Integer.MAX_VALUE;
+        int bottom = Integer.MIN_VALUE;
+
+        for (Point pos : inp) {
+            int x = pos.x;
+            int y = pos.y;
+            left = (x < left) ? x : left;
+            right = (x > right) ? x : right;
+            top = (y < top) ? y : top;
+            bottom = (y > bottom) ? y : bottom;
+        }
+
+        Map<Point, Integer> space = new HashMap<Point, Integer>();
+        for (int x = left; x <= right; x++) {
+            for (int y = top; y <= bottom; y++) {
+                // sum manhatan distance to all points
+                int mdSum = 0;
+                for (Point pos : inp) {
+                    mdSum += Math.abs(x - pos.x) + Math.abs(y - pos.y);
+                }
+                if (mdSum < limit)
+                    space.put(new Point(x, y), 1);
+                else
+                    space.put(new Point(x, y), 0);
+            }
+        }
+
         int sum = 0;
+        for (int safe : space.values())
+            sum += safe;
         return sum;
     }
 
@@ -100,7 +133,14 @@ public class Day_06 {
         ArrayList<Point> inp = day_06.getInputData();
         answer1 = day_06.day06PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
-        answer2 = day_06.day06PartTwo();
+        answer2 = day_06.day06PartTwo(inp, 10000);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
+/*
+Advent of code 2018, Day 06
+
+Solution Part one: 5358
+Solution Part two: 37093
+*/
