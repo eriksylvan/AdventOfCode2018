@@ -15,7 +15,7 @@ public class Day_XX_test extends TestCase {
 
         int expected = 9999;
         int actual = day_xx.dayXXPartOne();
-        assertEquals("expected: " + expected + " actual: " + actual, actual, expected);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 }
 
