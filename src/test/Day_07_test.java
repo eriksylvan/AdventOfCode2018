@@ -15,24 +15,27 @@ public class Day_07_test extends TestCase {
     @Test
     public void testPartOne_1() {
 
-        String[] input = { 
-            "Step C must be finished before step A can begin.",
-            "Step C must be finished before step F can begin.",
-            "Step A must be finished before step B can begin.",
-            "Step A must be finished before step D can begin.",
-            "Step B must be finished before step E can begin.",
-            "Step D must be finished before step E can begin.",
-            "Step F must be finished before step E can begin.",
-         };
+        String[] input = { "Step C must be finished before step A can begin.",
+                "Step C must be finished before step F can begin.", "Step A must be finished before step B can begin.",
+                "Step A must be finished before step D can begin.", "Step B must be finished before step E can begin.",
+                "Step D must be finished before step E can begin.",
+                "Step F must be finished before step E can begin.", };
 
         ArrayList<String> indata = new ArrayList<String>(Arrays.asList(input));
 
-        int expected = 9999;
-        int actual = day_07.day07PartOne(indata);
-        assertEquals("expected: " + expected + " actual: " + expected, actual);
+        String expected = "CABDFE";
+        String actual = day_07.day07PartOne(indata);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
+    @Test
+    public void testSolutionPartOne() {
 
-    
+        ArrayList<String> indata = day_07.getInputData();
+
+        String expected = "ACBDESULXKYZIMNTFGWJVPOHRQ";
+        String actual = day_07.day07PartOne(indata);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
 }
-

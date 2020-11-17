@@ -1,8 +1,10 @@
 package main;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +19,6 @@ public class Day_07 {
 
     String inputFile = "input\\input_07.txt";
 
-    public static class Node {
-		public char name;
-        public List<Node> assambleAfter = new ArrayList<>();
-	}
-
     public ArrayList<String> getInputData() {
         Scanner inputScanner;
         inputScanner = new Scanner(Day_07.class.getResourceAsStream(inputFile));
@@ -33,45 +30,73 @@ public class Day_07 {
         return inp;
     }
 
-    public int day07PartOne(ArrayList<String> input) {
-        
+    public String day07PartOne(ArrayList<String> input) {
 
-        List<Node> graph = new ArrayList<>(); 
-        Map<String, Integer> order = new HashMap<String, Integer>();
-        
-        ArrayList<String>  instruction = new ArrayList<String>();  
+        Map<Character, List<Character>> E = new HashMap<Character, List<Character>>();
+        Map<Character, Integer> D = new HashMap<Character, Integer>();
         for (String str : input) {
             Pattern p = Pattern.compile("Step ([A-Z]) must be finished before step ([A-Z])");
             Matcher m = p.matcher(str);
             String step = "";
             String before = "";
+            Character x = ' ';
+            Character y = ' ';
             if (m.find()) {
                 step = m.group(1);
                 before = m.group(2);
+                x = step.charAt(0);
+                y = before.charAt(0);
             }
-            instruction.add(before + step);
-            if (order.containsKey(step)) {
-                order.put(step, order.get(step) + 1);
+
+            if (E.containsKey(x)) {
+                E.get(x).add(y);
             } else {
-                order.put(step, 1);
+                List<Character> l = new ArrayList<Character>();
+                l.add(y);
+                E.put(x, l);
             }
-            if (order.containsKey(before)) {
-                order.put(before, order.get(before) - 1);
+
+            E.putIfAbsent(y, new ArrayList<Character>());
+            D.putIfAbsent(x, 0);
+
+            if (D.containsKey(y)) {
+                D.put(y, D.get(y) + 1);
             } else {
-                order.put(before, -1);
+                D.put(y, 1);
             }
-            System.out.println(step + " -> " + before);
-        
         }
-        Collections.sort(instruction);
-        
-        System.out.println(instruction);
 
-        System.out.println(order);
-        Node n = new Node();
+        Deque<Character> Q = new ArrayDeque<Character>();
 
-        System.out.println("Size: " + input.size());
-        return 0;
+        // Find the instruction that is has no instructions besfore
+        for (Character ch : E.keySet()) {
+            if (D.get(ch) == 0) {
+                Q.add(ch);
+            }
+        }
+
+        String answer = "";
+
+        while (!Q.isEmpty()) {
+
+            // Sort dqueue
+            Character[] sorted = Q.toArray(new Character[0]);
+            Arrays.sort(sorted);
+            Q.clear();
+            for (Character c : sorted) {
+                Q.add(c);
+            }
+
+            char a = Q.pop();
+            answer += a;
+            for (Character ch : E.get(a)) {
+                D.put(ch, D.get(ch) - 1);
+                if (D.get(ch) == 0) {
+                    Q.add(ch);
+                }
+            }
+        }
+        return answer;
     }
 
     public int day07PartTwo() {
@@ -82,7 +107,8 @@ public class Day_07 {
     public static void main(String[] args) {
         System.out.println("Advent of code 2018, Day 07\n");
         Day_07 day_07 = new Day_07();
-        int answer1, answer2;
+        String answer1;
+        int answer2;
         ArrayList<String> inp = day_07.getInputData();
         answer1 = day_07.day07PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
@@ -90,3 +116,11 @@ public class Day_07 {
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
+/*
+ * procedure BFS(G, v) is create a queue Q enqueue v onto Q mark v while Q is
+ * not empty do w ← Q.dequeue() if w is what we are looking for then return w
+ * for all edges e in G.adjacentEdges(w) do x ← G.adjacentVertex(w, e) if x is
+ * not marked then mark x enqueue x onto Q return null
+ * 
+ **/
