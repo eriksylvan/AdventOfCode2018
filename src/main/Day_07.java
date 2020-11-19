@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 /**
  * Day_07
+ * 
+ * https://adventofcode.com/2018/day/7
  */
 public class Day_07 {
 
@@ -30,10 +32,8 @@ public class Day_07 {
         return inp;
     }
 
-    public String day07PartOne(ArrayList<String> input) {
-
-        Map<Character, List<Character>> E = new HashMap<Character, List<Character>>();
-        Map<Character, Integer> D = new HashMap<Character, Integer>();
+    private void ArrangeInstructions(ArrayList<String> input, Map<Character, List<Character>> e,
+            Map<Character, Integer> d) {
         for (String str : input) {
             Pattern p = Pattern.compile("Step ([A-Z]) must be finished before step ([A-Z])");
             Matcher m = p.matcher(str);
@@ -48,24 +48,41 @@ public class Day_07 {
                 y = before.charAt(0);
             }
 
-            if (E.containsKey(x)) {
-                E.get(x).add(y);
+            if (e.containsKey(x)) {
+                e.get(x).add(y);
             } else {
                 List<Character> l = new ArrayList<Character>();
                 l.add(y);
-                E.put(x, l);
+                e.put(x, l);
             }
 
-            E.putIfAbsent(y, new ArrayList<Character>());
-            D.putIfAbsent(x, 0);
+            e.putIfAbsent(y, new ArrayList<Character>());
+            d.putIfAbsent(x, 0);
 
-            if (D.containsKey(y)) {
-                D.put(y, D.get(y) + 1);
+            if (d.containsKey(y)) {
+                d.put(y, d.get(y) + 1);
             } else {
-                D.put(y, 1);
+                d.put(y, 1);
             }
         }
+        // System.out.println(E);
 
+    }
+
+    public String day07PartOne(ArrayList<String> input) {
+
+        // E lists the instuctions that comes after every instruction
+        // E['A'] = [B, D] means that A must be done before B and D
+        Map<Character, List<Character>> E = new HashMap<Character, List<Character>>();
+        // D counts the depth of every instruction, the number of instructions that has
+        // to be done before this specific instructon
+        // if D['A']==0 thean A can be performed, it has not dependent on any
+        // instructions
+        Map<Character, Integer> D = new HashMap<Character, Integer>();
+
+        ArrangeInstructions(input, E, D);
+
+        // Q contains all instructions that can be done next.
         Deque<Character> Q = new ArrayDeque<Character>();
 
         // Find the instruction that is has no instructions besfore
@@ -80,12 +97,7 @@ public class Day_07 {
         while (!Q.isEmpty()) {
 
             // Sort dqueue
-            Character[] sorted = Q.toArray(new Character[0]);
-            Arrays.sort(sorted);
-            Q.clear();
-            for (Character c : sorted) {
-                Q.add(c);
-            }
+            SortQueue(Q);
 
             char a = Q.pop();
             answer += a;
@@ -99,9 +111,125 @@ public class Day_07 {
         return answer;
     }
 
-    public int day07PartTwo() {
-        int sum = 0;
-        return sum;
+    private void SortQueue(Deque<Character> Q) {
+        Character[] sorted = Q.toArray(new Character[0]);
+        Arrays.sort(sorted);
+        Q.clear();
+        for (Character c : sorted) {
+            Q.add(c);
+        }
+    }
+
+    private boolean IdleWorker(int[] i) {
+        for (int a : i) {
+            if (a == 0)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean AllIdleWorker(int[] i) {
+        for (int a : i) {
+            if (a != 0)
+                return false;
+        }
+        return true;
+    }
+
+    public int day07PartTwo(ArrayList<String> input, int workers, int time) {
+
+        // E lists the instuctions that comes after every instruction
+        // E['A'] = [B, D] means that A must be done before B and D
+        Map<Character, List<Character>> E = new HashMap<Character, List<Character>>();
+        // D counts the depth of every instruction, the number of instructions that has
+        // to be done before this specific instructon
+        // if D['A']==0 thean A can be performed, it has not dependent on any
+        // instructions
+        Map<Character, Integer> D = new HashMap<Character, Integer>();
+        String answer = "";
+        ArrangeInstructions(input, E, D);
+        // Q contains all instructions that can be done next.
+        Deque<Character> Q = new ArrayDeque<Character>();
+
+        int[] WoTimeLeft = new int[workers];
+        char[] WoInstr = new char[workers];
+        List<Character> WoDone = new ArrayList<Character>();
+
+        System.out.println("--" + WoTimeLeft[0] + "--");
+        System.out.println("--" + WoInstr[0] + "--");
+        // Find the instruction to start with
+        for (Character ch : E.keySet()) {
+            if (D.get(ch) == 0) {
+                Q.add(ch);
+            }
+        }
+        boolean done = false;
+        int seconds = 0;
+        while (!done) {
+
+            while (IdleWorker(WoTimeLeft)) {
+                // Find the instruction that is has no instructions besfore
+                if (Q.isEmpty()) {
+                    break;
+                }
+
+                // Find idle worker
+                int idleWorker = -1;
+                for (int i = 0; i < WoTimeLeft.length; i++) {
+                    if (WoTimeLeft[i] == 0)
+
+                    {
+                        idleWorker = i;
+                        break; // for
+                    }
+                }
+
+                // pick next job to do
+                // Pick next instruction
+                SortQueue(Q);
+                char a = Q.pop();
+
+                WoTimeLeft[idleWorker] = (int) a - (int) 'A' + time + 1;
+                WoInstr[idleWorker] = a;
+            }
+            
+            seconds++;
+            System.out.println(seconds + " sek, Done:  " + WoDone);
+
+            if (AllIdleWorker(WoTimeLeft)) {
+                done = true;
+                break; // while
+            }
+
+            // decrement each workers remaining time
+            // if a worker finishes, mark its task as completed
+            for (int i = 0; i < WoTimeLeft.length; i++) {
+                System.out.println("Worker: " + i + " Instr: " + WoInstr[i] + " TimeLeft: " + WoTimeLeft[i]);
+                WoTimeLeft[i] = (WoTimeLeft[i] == 0 ? 0 : WoTimeLeft[i] - 1);
+                if (WoTimeLeft[i] == 0) {
+                    if ((int) WoInstr[i] != 0) {
+                        WoDone.add(WoInstr[i]);
+                        WoInstr[i] = 0;
+                    }
+                }
+            }
+
+            // remove done jobs
+
+            for (Character j : WoDone) {
+                for (Character ch : E.get(j)) {
+                    D.put(ch, D.get(ch) - 1);
+                    if (D.get(ch) == 0) {
+                        Q.add(ch);
+                    }
+                }
+            }
+
+            //seconds++;
+            //System.out.println(seconds + " sek, Done:  " + WoDone);
+
+        }
+        return seconds;
     }
 
     public static void main(String[] args) {
@@ -112,10 +240,12 @@ public class Day_07 {
         ArrayList<String> inp = day_07.getInputData();
         answer1 = day_07.day07PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
-        answer2 = day_07.day07PartTwo();
+        answer2 = day_07.day07PartTwo(inp, 5, 0);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
+/* Solution Part two: 433 to low
 
 /*
  * procedure BFS(G, v) is create a queue Q enqueue v onto Q mark v while Q is
