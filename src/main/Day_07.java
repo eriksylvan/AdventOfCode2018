@@ -139,7 +139,7 @@ public class Day_07 {
 
     private void PrintWork(int second, char[] WoInstr, String done) {
         if (second == 0) {
-            System.out.print("Swk\t");
+            System.out.print("Sek\t");
             for (int c = 0; c < WoInstr.length; c++) {
                 System.out.print("W: " + c + "\t");
 
@@ -164,7 +164,6 @@ public class Day_07 {
         // if D['A']==0 thean A can be performed, it has not dependent on any
         // instructions
         Map<Character, Integer> D = new HashMap<Character, Integer>();
-        String answer = "";
         ArrangeInstructions(input, E, D);
         // Q contains all instructions that can be done next.
         Deque<Character> Q = new ArrayDeque<Character>();
@@ -202,14 +201,8 @@ public class Day_07 {
                     }
                 }
 
-                // pick next job to do
                 // Pick next instruction
                 SortQueue(Q);
-
-                System.out.println(E);
-                System.out.println(D);
-                System.out.println(Q);
-
                 char a = Q.pop();
 
                 WoTimeLeft[idleWorker] = (int) a - (int) 'A' + time + 1;
@@ -238,55 +231,33 @@ public class Day_07 {
                         WoInstr[i] = 0;
                     }
                 }
-
-                // remove done jobs and fill job queue with new ones
-/*
-                for (Character j : WoDone) {
-                    for (Character ch : E.get(j)) {
-                        D.put(ch, D.get(ch) - 1);
-                        if (D.get(ch) == 0) {
-                            Q.add(ch);
-                        }
-
-                    }
-                }
-*/
             }
 
             // Time passes
             seconds++;
-            // System.out.println(seconds + " sek, Done: " + WoDone);
-
         }
         PrintWork(seconds, WoInstr, WoDone.toString());
         return seconds;
     }
 
     public static void main(String[] args) {
-        System.out.println("Advent of code 2018, Day 07\n");
         Day_07 day_07 = new Day_07();
         String answer1;
         int answer2;
         ArrayList<String> inp = day_07.getInputData();
         answer1 = day_07.day07PartOne(inp);
-        System.out.println("Solution Part one: " + answer1);
         answer2 = day_07.day07PartTwo(inp, 5, 60);
+
+        System.out.println("Advent of code 2018, Day 07\n");
+        System.out.println("Solution Part one: " + answer1);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
 /*
  * Advent of code 2018, Day 07
- * 
+ *
  * Solution Part one: ACBDESULXKYZIMNTFGWJVPOHRQ
+ * Solution Part two: 980
  * 
  * 
  */
-/*
- * Solution Part two: 433 to low
- * 
- * /* procedure BFS(G, v) is create a queue Q enqueue v onto Q mark v while Q is
- * not empty do w ← Q.dequeue() if w is what we are looking for then return w
- * for all edges e in G.adjacentEdges(w) do x ← G.adjacentVertex(w, e) if x is
- * not marked then mark x enqueue x onto Q return null
- * 
- **/
