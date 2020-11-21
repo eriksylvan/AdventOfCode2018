@@ -248,7 +248,7 @@ public class Day_07 {
         answer1 = day_07.day07PartOne(inp);
         answer2 = day_07.day07PartTwo(inp, 5, 60);
 
-        System.out.println("Advent of code 2018, Day 07\n");
+        System.out.println("\n\nAdvent of code 2018, Day 07\n");
         System.out.println("Solution Part one: " + answer1);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }

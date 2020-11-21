@@ -32,13 +32,14 @@ public class Day_XX {
     }
 
     public static void main(String[] args) {
-        System.out.println("Advent of code 2018, Day XX\n");
         Day_XX day_xx = new Day_XX();
         int answer1, answer2;
         //ArrayList<Integer> inp = day_xx.getInputData();
         answer1 = day_xx.dayXXPartOne();
-        System.out.println("Solution Part one: " + answer1);
+        
         answer2 = day_xx.dayXXPartTwo();
+        System.out.println("\n\nAdvent of code 2018, Day XX\n");    
+        System.out.println("Solution Part one: " + answer1);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
