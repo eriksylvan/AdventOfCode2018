@@ -95,18 +95,19 @@ public class Day_07 {
         String answer = "";
 
         while (!Q.isEmpty()) {
-
             // Sort dqueue
             SortQueue(Q);
 
             char a = Q.pop();
             answer += a;
+
             for (Character ch : E.get(a)) {
                 D.put(ch, D.get(ch) - 1);
                 if (D.get(ch) == 0) {
                     Q.add(ch);
                 }
             }
+
         }
         return answer;
     }
@@ -136,6 +137,23 @@ public class Day_07 {
         return true;
     }
 
+    private void PrintWork(int second, char[] WoInstr, String done) {
+        if (second == 0) {
+            System.out.print("Swk\t");
+            for (int c = 0; c < WoInstr.length; c++) {
+                System.out.print("W: " + c + "\t");
+
+            }
+            System.out.println("Done");
+        }
+        System.out.print(second + "\t");
+        for (char i : WoInstr) {
+            System.out.print(i + "\t");
+        }
+        System.out.println(done);
+
+    }
+
     public int day07PartTwo(ArrayList<String> input, int workers, int time) {
 
         // E lists the instuctions that comes after every instruction
@@ -154,19 +172,19 @@ public class Day_07 {
         int[] WoTimeLeft = new int[workers];
         char[] WoInstr = new char[workers];
         List<Character> WoDone = new ArrayList<Character>();
+        int seconds = 0;
 
-        System.out.println("--" + WoTimeLeft[0] + "--");
-        System.out.println("--" + WoInstr[0] + "--");
-        // Find the instruction to start with
+        // Find the instruction(s) to start with
         for (Character ch : E.keySet()) {
             if (D.get(ch) == 0) {
                 Q.add(ch);
             }
         }
         boolean done = false;
-        int seconds = 0;
-        while (!done) {
 
+        while (WoDone.size() < D.size()) {
+
+            // give all idle workers some work
             while (IdleWorker(WoTimeLeft)) {
                 // Find the instruction that is has no instructions besfore
                 if (Q.isEmpty()) {
@@ -187,48 +205,60 @@ public class Day_07 {
                 // pick next job to do
                 // Pick next instruction
                 SortQueue(Q);
+
+                System.out.println(E);
+                System.out.println(D);
+                System.out.println(Q);
+
                 char a = Q.pop();
 
                 WoTimeLeft[idleWorker] = (int) a - (int) 'A' + time + 1;
                 WoInstr[idleWorker] = a;
             }
-            
-            seconds++;
-            System.out.println(seconds + " sek, Done:  " + WoDone);
 
-            if (AllIdleWorker(WoTimeLeft)) {
-                done = true;
-                break; // while
-            }
+            PrintWork(seconds, WoInstr, WoDone.toString());
+            // System.out.println(Q);
 
             // decrement each workers remaining time
             // if a worker finishes, mark its task as completed
             for (int i = 0; i < WoTimeLeft.length; i++) {
-                System.out.println("Worker: " + i + " Instr: " + WoInstr[i] + " TimeLeft: " + WoTimeLeft[i]);
+                // System.out.println("Worker: " + i + " Instr: " + WoInstr[i] + " TimeLeft: " +
+                // WoTimeLeft[i]);
                 WoTimeLeft[i] = (WoTimeLeft[i] == 0 ? 0 : WoTimeLeft[i] - 1);
                 if (WoTimeLeft[i] == 0) {
                     if ((int) WoInstr[i] != 0) {
                         WoDone.add(WoInstr[i]);
+                        // remove done jobs and fill job queue with new ones
+                        for (Character ch : E.get(WoInstr[i])) {
+                            D.put(ch, D.get(ch) - 1);
+                            if (D.get(ch) == 0) {
+                                Q.add(ch);
+                            }
+                        }
                         WoInstr[i] = 0;
                     }
                 }
-            }
 
-            // remove done jobs
+                // remove done jobs and fill job queue with new ones
+/*
+                for (Character j : WoDone) {
+                    for (Character ch : E.get(j)) {
+                        D.put(ch, D.get(ch) - 1);
+                        if (D.get(ch) == 0) {
+                            Q.add(ch);
+                        }
 
-            for (Character j : WoDone) {
-                for (Character ch : E.get(j)) {
-                    D.put(ch, D.get(ch) - 1);
-                    if (D.get(ch) == 0) {
-                        Q.add(ch);
                     }
                 }
+*/
             }
 
-            //seconds++;
-            //System.out.println(seconds + " sek, Done:  " + WoDone);
+            // Time passes
+            seconds++;
+            // System.out.println(seconds + " sek, Done: " + WoDone);
 
         }
+        PrintWork(seconds, WoInstr, WoDone.toString());
         return seconds;
     }
 
@@ -240,15 +270,21 @@ public class Day_07 {
         ArrayList<String> inp = day_07.getInputData();
         answer1 = day_07.day07PartOne(inp);
         System.out.println("Solution Part one: " + answer1);
-        answer2 = day_07.day07PartTwo(inp, 5, 0);
+        answer2 = day_07.day07PartTwo(inp, 5, 60);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
-
-/* Solution Part two: 433 to low
-
 /*
- * procedure BFS(G, v) is create a queue Q enqueue v onto Q mark v while Q is
+ * Advent of code 2018, Day 07
+ * 
+ * Solution Part one: ACBDESULXKYZIMNTFGWJVPOHRQ
+ * 
+ * 
+ */
+/*
+ * Solution Part two: 433 to low
+ * 
+ * /* procedure BFS(G, v) is create a queue Q enqueue v onto Q mark v while Q is
  * not empty do w ← Q.dequeue() if w is what we are looking for then return w
  * for all edges e in G.adjacentEdges(w) do x ← G.adjacentVertex(w, e) if x is
  * not marked then mark x enqueue x onto Q return null
