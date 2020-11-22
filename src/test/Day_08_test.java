@@ -24,13 +24,29 @@ public class Day_08_test extends TestCase {
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
-
+    @Test
+    public void testPartTwo_1() {
+        Integer[] input = { 2, 3, 0, 3, 10, 11, 12, 1, 1, 0, 1, 99, 2, 1, 1, 2 };
+        ArrayList<Integer> indata = new ArrayList<Integer>(Arrays.asList(input));
+        day_08.input = indata; 
+        int expected = 66;
+        int actual = day_08.day08PartTwo();
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
 
     @Test
     public void testSoulutionPartOne() {
         day_08.getInputData(); 
         int expected = 41521;
         int actual = day_08.day08PartOne();
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
+    @Test
+    public void testSoulutionPartTwo() {
+        day_08.getInputData(); 
+        int expected = 19990;
+        int actual = day_08.day08PartTwo();
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 }
