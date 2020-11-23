@@ -10,45 +10,57 @@ public class Day_09_test extends TestCase {
 
     @Test
     public void testPartOne_1() {
-        int expected = 32;
-        int actual = day_09.day09PartOne(9, 25);
+        long expected = 32;
+        long actual = day_09.day09PartOne(9, 25);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
+    @Test
     public void testPartOne_2() {
-        int expected = 8317;
-        int actual = day_09.day09PartOne(10, 1618);
+        long expected = 8317;
+        long actual = day_09.day09PartOne(10, 1618);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
+    @Test
     public void testPartOne_3() {
-        int expected = 146373;
-        int actual = day_09.day09PartOne(13, 7999);
+        long expected = 146373;
+        long actual = day_09.day09PartOne(13, 7999);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
+    @Test
     public void testPartOne_4() {
-        int expected = 2764;
-        int actual = day_09.day09PartOne(17, 1104);
+        long expected = 2764;
+        long actual = day_09.day09PartOne(17, 1104);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
+    @Test
     public void testPartOne_5() {
-        int expected = 54718;
-        int actual = day_09.day09PartOne(21, 6111);
+        long expected = 54718;
+        long actual = day_09.day09PartOne(21, 6111);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
+    @Test
     public void testPartOne_6() {
-        int expected = 37305;
-        int actual = day_09.day09PartOne(30, 5807);
+        long expected = 37305;
+        long actual = day_09.day09PartOne(30, 5807);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
     @Test
     public void testSoulutionPartOne() {
-        int expected = 396136;
-        int actual = day_09.day09PartOne(463, 71787);
+        long expected = 396136;
+        long actual = day_09.day09PartOne(463, 71787);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
+    @Test
+    public void testSoulutionPartTwo() {
+        long expected = 3183301184L;
+        long actual = day_09.day09PartOne(463, 7178700);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 
