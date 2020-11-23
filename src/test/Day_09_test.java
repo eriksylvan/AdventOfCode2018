@@ -44,4 +44,12 @@ public class Day_09_test extends TestCase {
         int actual = day_09.day09PartOne(30, 5807);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
+
+    @Test
+    public void testSoulutionPartOne() {
+        int expected = 396136;
+        int actual = day_09.day09PartOne(463, 71787);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
 }
