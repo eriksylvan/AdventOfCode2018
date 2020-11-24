@@ -7,7 +7,8 @@ import java.util.Scanner;
 import java.awt.Point;
 
 /**
- * Day_06 https://adventofcode.com/2018/day/6
+ * Day_06 
+ * https://adventofcode.com/2018/day/6
  */
 public class Day_06 {
 
