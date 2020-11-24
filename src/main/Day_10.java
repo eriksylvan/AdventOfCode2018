@@ -11,7 +11,7 @@ import java.awt.Point;
  */
 public class Day_10 {
 
-    String inputFile = "input\\input_10.txt";
+    public String inputFile = "input\\input_10.txt";
     ArrayList<String> input;
 
     public ArrayList<String> getInputData() {
