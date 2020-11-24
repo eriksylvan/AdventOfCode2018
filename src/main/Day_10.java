@@ -96,8 +96,8 @@ public class Day_10 {
             }
             System.out.println();
         }
-        int sum = 0;
-        return sum;
+        
+        return s;
     }
 
     public int day10PartTwo() {
@@ -110,12 +110,13 @@ public class Day_10 {
         Day_10 day_10 = new Day_10();
         int answer1, answer2;
         ArrayList<String> inp = day_10.getInputData();
+        System.out.println("Solution Part one:\n\n");
         answer1 = day_10.day10PartOne();
 
-        answer2 = day_10.day10PartTwo();
+        //answer2 = day_10.day10PartTwo();
         System.out.println("\n\nAdvent of code 2018, Day 10\n");
-        System.out.println("Solution Part one: " + answer1);
-        System.out.println("Solution Part two: " + answer2 + "\n\n");
+        System.out.println("Solution Part two: " + answer1);
+        //System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
 
