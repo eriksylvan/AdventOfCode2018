@@ -33,7 +33,6 @@ public class Day_11 {
     }
 
     public String day11PartOne(int serial) {
-        // int[][] grid = new int[300][300];
         int[][] grid = new int[300][300];
 
         for (int y = 0; y < 300; y++) {
@@ -47,35 +46,71 @@ public class Day_11 {
         int maxX = -1, maxY = -1;
         for (int y = 0; y < 298; y++) {
             for (int x = 0; x < 298; x++) {
-                //System.out.print(grid[x][y] + " ");
-                int p = grid[x][y] + grid[x+1][y] + grid[x+2][y] +
-                grid[x][y+1] + grid[x+1][y+1] + grid[x+2][y+1] +
-                grid[x][y+2] + grid[x+1][y+2] + grid[x+2][y+2];
-                if (p > maxP){
+                // System.out.print(grid[x][y] + " ");
+                int p = grid[x][y] + grid[x + 1][y] + grid[x + 2][y] + grid[x][y + 1] + grid[x + 1][y + 1]
+                        + grid[x + 2][y + 1] + grid[x][y + 2] + grid[x + 1][y + 2] + grid[x + 2][y + 2];
+                if (p > maxP) {
                     maxP = p;
                     maxX = x;
                     maxY = y;
                 }
             }
         }
-        String c = maxX+","+maxY;
+        String c = maxX + "," + maxY;
         return c;
     }
 
-    public int day11PartTwo() {
-        int sum = 0;
-        return sum;
+    public String day11PartTwo(int serial) {
+        int[][] grid = new int[300][300];
+
+        for (int y = 0; y < 300; y++) {
+            for (int x = 0; x < 300; x++) {
+                grid[x][y] = getPowerLevel(x, y, serial);
+            }
+        }
+        int maxP = Integer.MIN_VALUE;
+        int maxX = -1, maxY = -1;
+        int maxS = -1;
+
+        for (int s = 1; s <= 300; s++) {
+            for (int y = 0; y <= 300 - s; y++) {
+                for (int x = 0; x <= 300 - s; x++) {
+                    int p = 0;
+                    for (int j = y; j < y + s; j++) {
+                        for (int i = x; i < x + s; i++) {
+                            p += grid[i][j];
+                        }
+                        if (p > maxP) {
+                            maxP = p;
+                            maxX = x;
+                            maxY = y;
+                            maxS = s;
+                        }
+                    }
+                }
+            }
+        }
+        String c = maxX + "," + maxY + "," + maxS;
+        return c;
     }
 
     public static void main(String[] args) {
         Day_11 day_11 = new Day_11();
         String answer1;
-        int answer2;
-        answer1 = day_11.day11PartOne(9995);
+        String answer2;
+        int serialNumber = 9995;
+        answer1 = day_11.day11PartOne(serialNumber);
+        answer2 = day_11.day11PartTwo(serialNumber);
 
-        answer2 = day_11.day11PartTwo();
         System.out.println("\n\nAdvent of code 2018, Day 11\n");
         System.out.println("Solution Part one: " + answer1);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
+/*
+Advent of code 2018, Day 11
+
+Solution Part one: 33,45
+Solution Part two: 233,116,15
+*/

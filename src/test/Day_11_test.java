@@ -62,10 +62,34 @@ public class Day_11_test extends TestCase {
     }
 
     @Test
+    public void testPartTwo_1() {
+        int serialNumber = 18;
+        String expected = "90,269,16";
+        String actual = day_11.day11PartTwo(serialNumber);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
+    @Test
+    public void testPartTwo_2() {
+        int serialNumber = 42;
+        String expected = "232,251,12";
+        String actual = day_11.day11PartTwo(serialNumber);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
+    @Test
     public void testSolutionOne() {
         int serialNumber = 9995;
         String expected = "33,45";
         String actual = day_11.day11PartOne(serialNumber);
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
+    @Test
+    public void testSolutionTwo() {
+        int serialNumber = 9995;
+        String expected = "233,116,15";
+        String actual = day_11.day11PartTwo(serialNumber);
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 }
