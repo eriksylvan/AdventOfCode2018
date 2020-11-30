@@ -12,8 +12,8 @@ public class Day_13_test extends TestCase {
     public void testPartOne_1() {
         day_13.inputFile = "input\\input_13_test.txt";
         day_13.getInputData();
-        int expected = 9999;
-        int actual = day_13.day13PartOne();
+        String expected = "7,3";
+        String actual = day_13.day13PartOne();
         assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
     }
 }
