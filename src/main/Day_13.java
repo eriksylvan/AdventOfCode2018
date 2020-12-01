@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.lang.model.util.ElementScanner6;
+
 import java.awt.Point;
 
 /**
@@ -42,12 +44,29 @@ public class Day_13 {
         }
     }
 
-    private class cart {
+    public class cart implements Comparable<cart> {
         private int x;
         private int y;
         private DIRECTION direction; // enum
         private TURN nextTurn; //
         private ArrayList<char[]> map;
+
+        @Override
+        public int compareTo(cart c) {
+
+            if (this.y < c.y)
+                return -1;
+            else if (this.y > c.y)
+                return 1;
+            else {
+                if (this.x < c.x)
+                    return -1;
+                else if (this.x > c.x)
+                    return 1;
+                else
+                    return 0;
+            }
+        }
 
         public cart(int x, int y, char direction, ArrayList<char[]> map) {
             this.x = x;
@@ -143,12 +162,13 @@ public class Day_13 {
                     break;
                 default:
                     // code block
+
             }
 
         }
 
         private DIRECTION getNextDirection(DIRECTION direction2, TURN nextTurn2) {
-            return DIRECTION.values()[Math.floorMod(this.direction.getValue() + this.nextTurn.getValue(), 4)];
+            return DIRECTION.values()[Math.floorMod(direction2.getValue() + nextTurn2.getValue(), 4)];
         }
 
         private TURN getNextTurn(TURN nextTurn2) {
@@ -166,6 +186,7 @@ public class Day_13 {
                     return nextTurn2;
             }
         }
+
     }
 
     public void getInputData() {
@@ -226,15 +247,18 @@ public class Day_13 {
         int crashY = -1;
         while (!crash) {
 
+            // sortera carts
+            carts.sort(null);
+
             for (cart c : carts) {
                 c.move();
                 // System.out.println(c.direction + " " + c.nextTurn + " " + c.x + " " + c.y);
                 for (cart cart1 : carts) {
-                        if (cart1 != c && cart1.x == c.x && cart1.y == c.y) {
-                            crash = true;
-                            crashX = c.x;
-                            crashY = c.y;
-                            break;
+                    if (cart1 != c && cart1.x == c.x && cart1.y == c.y) {
+                        crash = true;
+                        crashX = c.x;
+                        crashY = c.y;
+                        break;
                     }
                     if (crash)
                         break;
@@ -263,5 +287,8 @@ public class Day_13 {
     }
 }
 /*
- That's not the right answer. If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit. Please wait one minute before trying again. (You guessed 41,111.)
+ * That's not the right answer. If you're stuck, make sure you're using the full
+ * input data; there are also some general tips on the about page, or you can
+ * ask for hints on the subreddit. Please wait one minute before trying again.
+ * (You guessed 41,111.)
  */
