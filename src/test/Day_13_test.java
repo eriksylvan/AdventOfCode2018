@@ -18,6 +18,16 @@ public class Day_13_test extends TestCase {
     }
 
     @Test
+    public void testPartTwo_1() {
+        day_13.inputFile = "input\\input_13_test2.txt";
+        day_13.getInputData();
+        String expected = "6,4";
+        String actual = day_13.day13PartTwo();
+        assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
+    }
+
+
+    @Test
     public void testSolutionPartOne() {
         day_13.inputFile =  "input\\input_13.txt";
         day_13.getInputData();

@@ -47,6 +47,7 @@ public class Day_13 {
     public class cart implements Comparable<cart> {
         private int x;
         private int y;
+        private boolean onTrack;
         private DIRECTION direction; // enum
         private TURN nextTurn; //
         private ArrayList<char[]> map;
@@ -71,6 +72,7 @@ public class Day_13 {
         public cart(int x, int y, char direction, ArrayList<char[]> map) {
             this.x = x;
             this.y = y;
+            this.onTrack = true;
             switch (direction) {
                 case '<':
                     this.direction = DIRECTION.LEFT;
@@ -236,17 +238,11 @@ public class Day_13 {
     }
 
     public String day13PartOne() {
-        /*
-         * for (char[] s : this.map) { System.out.println(s); } for (cart c : carts) {
-         * //System.out.println(c.direction + " " + c.nextTurn + " " + c.x + " " + c.y);
-         * 
-         * }
-         */
+
         boolean crash = false;
         int crashX = -1;
         int crashY = -1;
         while (!crash) {
-
             // sortera carts
             carts.sort(null);
 
@@ -270,8 +266,39 @@ public class Day_13 {
     }
 
     public String day13PartTwo() {
+        int nrOfChart = carts.size();
+        while (nrOfChart > 1) {
+            // sortera carts
+            carts.sort(null);
+            for (cart c : carts) {
+                if (c.onTrack) {
+                    c.move();
+                    for (cart cart1 : carts) {
+                        if (cart1.onTrack) {
+                            if (cart1 != c && cart1.x == c.x && cart1.y == c.y) {
+                                {
+                                    // carts.remove(cart1);
+                                    // carts.remove(c);
+                                    cart1.onTrack = false;
+                                    c.onTrack = false;
+                                    nrOfChart -= 2;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        int posx = -1, posy = -1;
+        for (cart l : carts) {
+            if (l.onTrack) {
+                posx = l.x;
+                posy = l.y;
+            }
+        }
+        return posx + "," + posy;
 
-        return "sum";
     }
 
     public static void main(String[] args) {
@@ -287,8 +314,6 @@ public class Day_13 {
     }
 }
 /*
- * That's not the right answer. If you're stuck, make sure you're using the full
- * input data; there are also some general tips on the about page, or you can
- * ask for hints on the subreddit. Please wait one minute before trying again.
- * (You guessed 41,111.)
+ * Part two fail: (You guessed 128,110.)
+ * (You guessed 128,111.)
  */
