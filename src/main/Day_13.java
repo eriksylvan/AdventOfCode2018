@@ -14,7 +14,7 @@ import java.awt.Point;
 public class Day_13 {
     public String inputFile = "input\\input_13.txt";
     private ArrayList<char[]> map = new ArrayList<char[]>();
-    private ArrayList<cart> carts = new ArrayList<cart>();
+    //private ArrayList<cart> carts = new ArrayList<cart>();
 
     public enum DIRECTION {
         UP(0), RIGHT(1), DOWN(2), LEFT(3);
@@ -191,9 +191,10 @@ public class Day_13 {
 
     }
 
-    public void getInputData() {
+    public ArrayList<cart> getInputData() {
         Scanner inputScanner;
         inputScanner = new Scanner(Day_13.class.getResourceAsStream(inputFile));
+        ArrayList<cart> cartsStart = new ArrayList<cart>();
         int l = 0;
         while (inputScanner.hasNext()) {
 
@@ -223,7 +224,7 @@ public class Day_13 {
                         r = ch;
                 }
                 if (r != ch)
-                    this.carts.add(new cart(c, l, ch, this.map));
+                    cartsStart.add(new cart(c, l, ch, this.map));
 
                 chararray[c] = r;
                 c++;
@@ -233,23 +234,24 @@ public class Day_13 {
             l++;
 
         }
-        System.out.println();
         inputScanner.close();
+        return cartsStart;
     }
 
     public String day13PartOne() {
-
+        ArrayList<cart> carts1 = new ArrayList<cart>();
+        carts1 = getInputData();
         boolean crash = false;
         int crashX = -1;
         int crashY = -1;
         while (!crash) {
             // sortera carts
-            carts.sort(null);
+            carts1.sort(null);
 
-            for (cart c : carts) {
+            for (cart c : carts1) {
                 c.move();
                 // System.out.println(c.direction + " " + c.nextTurn + " " + c.x + " " + c.y);
-                for (cart cart1 : carts) {
+                for (cart cart1 : carts1) {
                     if (cart1 != c && cart1.x == c.x && cart1.y == c.y) {
                         crash = true;
                         crashX = c.x;
@@ -266,19 +268,21 @@ public class Day_13 {
     }
 
     public String day13PartTwo() {
-        int nrOfChart = carts.size();
+        getInputData();
+        ArrayList<cart> carts2 = new ArrayList<cart>();
+        carts2 = getInputData();
+        int nrOfChart = carts2.size();
         while (nrOfChart > 1) {
             // sortera carts
-            carts.sort(null);
-            for (cart c : carts) {
+            carts2.sort(null);
+            
+            for (cart c : carts2) {
                 if (c.onTrack) {
                     c.move();
-                    for (cart cart1 : carts) {
+                    for (cart cart1 : carts2) {
                         if (cart1.onTrack) {
                             if (cart1 != c && cart1.x == c.x && cart1.y == c.y) {
                                 {
-                                    // carts.remove(cart1);
-                                    // carts.remove(c);
                                     cart1.onTrack = false;
                                     c.onTrack = false;
                                     nrOfChart -= 2;
@@ -291,29 +295,29 @@ public class Day_13 {
             }
         }
         int posx = -1, posy = -1;
-        for (cart l : carts) {
+        for (cart l : carts2) {
             if (l.onTrack) {
                 posx = l.x;
                 posy = l.y;
             }
         }
         return posx + "," + posy;
-
     }
 
     public static void main(String[] args) {
         Day_13 day_13 = new Day_13();
         String answer1, answer2;
-        day_13.getInputData();
         answer1 = day_13.day13PartOne();
-
         answer2 = day_13.day13PartTwo();
         System.out.println("\n\nAdvent of code 2018, Day 13\n");
         System.out.println("Solution Part one: " + answer1);
         System.out.println("Solution Part two: " + answer2 + "\n\n");
     }
 }
+
 /*
- * Part two fail: (You guessed 128,110.)
- * (You guessed 128,111.)
- */
+Advent of code 2018, Day 13
+
+Solution Part one: 79,128
+Solution Part two: 3,42
+*/
